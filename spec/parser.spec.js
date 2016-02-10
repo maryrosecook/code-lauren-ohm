@@ -119,3 +119,29 @@ describe("invocation", function() {
     expect(grammar.match("a( 1)").succeeded()).toBe(true);
   });
 });
+
+describe("assignments", function() {
+  it("should parse an assignment of a number", function() {
+    expect(grammar.match("name: 1").succeeded()).toBe(true);
+  });
+
+  it("should parse an assignment of a lambda", function() {
+    expect(grammar.match("name: { ?a a }").succeeded()).toBe(true);
+  });
+
+  it("should parse an assignment of an invocation of a lambda", function() {
+    expect(grammar.match("name: { ?a a }(1)").succeeded()).toBe(true);
+  });
+
+  it("should parse an assignment of an invocation of a label", function() {
+    expect(grammar.match("name: add(1)").succeeded()).toBe(true);
+  });
+
+  it("should allow space before expression after assignment", function() {
+    expect(grammar.match('name: "Lauren" \n name').succeeded()).toBe(true);
+  });
+
+  it("should not allow assignment followed by another expression", function() {
+    expect(grammar.match("a: 1 1").succeeded()).toBe(false);
+  });
+});

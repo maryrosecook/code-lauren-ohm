@@ -2,7 +2,7 @@ CodeLauren {
   Start = ExpressionList
 
   ExpressionList = listOf<Expression, eol>
-  Expression = Invocation | Lambda | Literal
+  Expression = Invocation | Assignment | Lambda | Literal
 
   Lambda = "{" ParameterList ExpressionList "}"
 
@@ -16,6 +16,8 @@ CodeLauren {
 
   ParameterList = listOf<Parameter, space>
   Parameter = "?" identifier
+
+  Assignment = identifier ":" Expression
 
   Literal = number | string | identifier
 

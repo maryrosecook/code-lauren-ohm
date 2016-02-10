@@ -1,7 +1,16 @@
 CodeLauren {
-  start = literal
+  Start = Literal | Lambda
 
-  literal = number | string | identifier
+  Lambda = "{" Parameters Expressions "}"
+
+  Expressions = listOf<Expression, space>
+
+  Parameters = listOf<Parameter, space>
+  Parameter = "?" identifier
+
+  Expression = Literal
+
+  Literal = number | string | identifier
 
   number = "-"? digit+ ("." digit+)?
   string = "\"" (alnum | "-" | "." | "," | "#" | space)* "\""

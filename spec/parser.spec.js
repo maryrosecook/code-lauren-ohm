@@ -36,3 +36,25 @@ describe("atoms", function() {
     expect(grammar.match("1person").succeeded()).toBe(false);
   });
 });
+
+describe("lambda", function() {
+  it("should parse an uninvoked lambda with no params or body", function() {
+    expect(grammar.match("{}").succeeded()).toBe(true);
+  });
+
+  it("should parse an uninvoked lambda with a couple of literals as its body", function() {
+    expect(grammar.match("{ 1 \n 2 }").succeeded()).toBe(true);
+  });
+
+  it("should parse an uninvoked lambda with two params and no body", function() {
+    expect(grammar.match("{ ?name ?height }").succeeded()).toBe(true);
+  });
+
+  it("should parse an uninvoked lambda with two params and two body expressions", function() {
+    expect(grammar.match("{ ?a ?b 1 \n 2 }").succeeded()).toBe(true);
+  });
+
+  it("should allow newlines and spaces between every element of a lambda", function() {
+    expect(grammar.match("{ \n ?a \n ?b \n 1 \n 1 \n }").succeeded()).toBe(true);
+  });
+});

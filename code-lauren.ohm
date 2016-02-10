@@ -1,7 +1,7 @@
 CodeLauren {
   Start = ExpressionList
 
-  ExpressionList = listOf<Expression, space>
+  ExpressionList = listOf<Expression, eol>
   Expression = Invocation | Lambda | Literal
 
   Lambda = "{" ParameterList ExpressionList "}"
@@ -11,7 +11,8 @@ CodeLauren {
   Invocable = Lambda | identifier
 
   ApplicationList = Application+
-  Application = "(" ExpressionList ")"
+  Application = "(" ArgumentList ")"
+  ArgumentList = listOf<Expression, space>
 
   ParameterList = listOf<Parameter, space>
   Parameter = "?" identifier
@@ -23,4 +24,7 @@ CodeLauren {
   identifier = ~keyword letter+ alnum*
 
   keyword = "if" | "elseif" | "else" | "forever" | "true" | "false"
+
+  eol = space_no_newline* "\n" space_no_newline*
+  space_no_newline = " " | "\r" | "\t"
 }

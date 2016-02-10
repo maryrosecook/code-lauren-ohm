@@ -59,7 +59,6 @@ describe("lambda", function() {
   });
 });
 
-
 describe("invocation", function() {
   it("shouldn't parse an invocation of nothing", function() {
     expect(grammar.match("()").succeeded()).toBe(false);

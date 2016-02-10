@@ -100,19 +100,9 @@ describe("invocation", function() {
     expect(grammar.match("{ {} }()()").succeeded()).toBe(true);
   });
 
-  // it("should be able to invoke result of conditional", function() {
-  //   var ast = parse("if true { }()");
-  //   expect(util.stripAst(util.getNodeAt(ast, ["top", "do", 0, "return"])))
-  //     .toEqual({ t: "invocation",
-  //                c: [{ t: "conditional",
-  //                      c: [{ t: "boolean", c: true },
-  //                          { t: "invocation",
-  //                            c: [{ t: "lambda",
-  //                                  c: [[], { t: "do",
-  //                                            c: [{ t : 'return',
-  //                                                  c : { t : 'undefined',
-  //                                                        c : undefined } }] }] }] }]}]});
-  // });
+  it("should be able to invoke result of conditional", function() {
+    expect(grammar.match("if true { }()").succeeded()).toBe(true);
+  });
 
   // regression
   it("should allow leading whitespace before first arg", function() {
@@ -143,5 +133,32 @@ describe("assignments", function() {
 
   it("should not allow assignment followed by another expression", function() {
     expect(grammar.match("a: 1 1").succeeded()).toBe(false);
+  });
+});
+
+describe("conditionals", function() {
+  it("should parse an conditional with an if", function() {
+    expect(grammar.match("if true { 1 }").succeeded()).toBe(true);
+  });
+
+  it("should parse an conditional with if and else if", function() {
+    expect(grammar.match("if true { 1 } elseif false { 2 }").succeeded()).toBe(true);
+  });
+
+  it("should parse an conditional with an if, else if and else", function() {
+    expect(grammar.match("if true { 1 } elseif false { 2 } else { 3 }").succeeded()).toBe(true);
+  });
+
+  it("should parse an conditional with if, two else ifs and else", function() {
+    expect(grammar.match("if true { } elseif false { } elseif false { } else { }").succeeded())
+      .toBe(true);
+  });
+
+  it("should parse an conditional with if w invoked conditional", function() {
+    expect(grammar.match("if really(true) { }").succeeded()).toBe(true);
+  });
+
+  it("should not allow else with condition", function() {
+    expect(grammar.match("if true { 1 } else false { 2 }").succeeded()).toBe(false);
   });
 });

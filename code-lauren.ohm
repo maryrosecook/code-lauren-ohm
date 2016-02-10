@@ -2,13 +2,13 @@ CodeLauren {
   Start = ExpressionList
 
   ExpressionList = listOf<Expression, eol>
-  Expression = Invocation | Assignment | Lambda | Literal
+  Expression = Invocation | Conditional | Assignment | Lambda | Literal
 
   Lambda = "{" ParameterList ExpressionList "}"
 
   Invocation = Invocable ApplicationList
 
-  Invocable = Lambda | identifier
+  Invocable = Conditional | Lambda | identifier
 
   ApplicationList = Application+
   Application = "(" ArgumentList ")"
@@ -19,11 +19,20 @@ CodeLauren {
 
   Assignment = identifier ":" Expression
 
-  Literal = number | string | identifier
+  Conditional = If
+  If = "if" Expression Lambda (Elseif | Else)*
+  Elseif = "elseif" Expression Lambda (Elseif | Else)*
+  Else = "else" Lambda
+
+  Literal = number | string | identifier | boolean
 
   number = "-"? digit+ ("." digit+)?
+
   string = "\"" (alnum | "-" | "." | "," | "#" | space)* "\""
+
   identifier = ~keyword letter+ alnum*
+
+  boolean = "true" | "false"
 
   keyword = "if" | "elseif" | "else" | "forever" | "true" | "false"
 

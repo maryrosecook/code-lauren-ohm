@@ -1,3 +1,11 @@
 CodeLauren {
-  greeting = "Hello" | "Hola"
+  start = literal
+
+  literal = number | string | identifier
+
+  number = "-"? digit+ ("." digit+)?
+  string = "\"" (alnum | "-" | "." | "," | "#" | space)* "\""
+  identifier = ~keyword letter+ alnum*
+
+  keyword = "if" | "elseif" | "else" | "forever" | "true" | "false"
 }

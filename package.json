@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node node_modules/jasmine-node/lib/jasmine-node/cli.js --color spec/"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/maryrosecook/code-lauren-ohm#readme",
   "dependencies": {
+    "jasmine-node": "^1.14.5",
     "ohm-js": "^0.9.0"
   }
 }

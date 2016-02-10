@@ -1,14 +1,20 @@
 CodeLauren {
-  Start = Literal | Lambda
+  Start = ExpressionList
 
-  Lambda = "{" Parameters Expressions "}"
+  ExpressionList = listOf<Expression, space>
+  Expression = Invocation | Lambda | Literal
 
-  Expressions = listOf<Expression, space>
+  Lambda = "{" ParameterList ExpressionList "}"
 
-  Parameters = listOf<Parameter, space>
+  Invocation = Invocable ApplicationList
+
+  Invocable = Lambda | identifier
+
+  ApplicationList = Application+
+  Application = "(" ExpressionList ")"
+
+  ParameterList = listOf<Parameter, space>
   Parameter = "?" identifier
-
-  Expression = Literal
 
   Literal = number | string | identifier
 

@@ -1,7 +1,4 @@
-var fs = require("fs");
-var ohm = require("ohm-js");
-var grammarText = fs.readFileSync("code-lauren.ohm");
-var grammar = ohm.grammar(grammarText);
+var grammar = require("../grammar");
 
 describe("atoms", function() {
   it("should parse an int", function() {

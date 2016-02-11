@@ -130,10 +130,6 @@ describe("assignments", function() {
   it("should allow space before expression after assignment", function() {
     expect(grammar.match('name: "Lauren" \n name').succeeded()).toBe(true);
   });
-
-  it("should not allow assignment followed by another expression", function() {
-    expect(grammar.match("a: 1 1").succeeded()).toBe(false);
-  });
 });
 
 describe("conditionals", function() {
@@ -160,5 +156,28 @@ describe("conditionals", function() {
 
   it("should not allow else with condition", function() {
     expect(grammar.match("if true { 1 } else false { 2 }").succeeded()).toBe(false);
+  });
+});
+
+describe("top", function() {
+  it("should allow an empty program", function() {
+    expect(grammar.match("").succeeded()).toBe(true);
+  });
+
+  it("should allow a list of top level expressions on separate lines", function() {
+    expect(grammar.match("print1()\nprint2()").succeeded()).toBe(true);
+  });
+});
+
+describe("expression lists", function() {
+  it("should not allow multiple expressions on same line of do block", function() {
+    expect(grammar.match("a: 1 1").succeeded()).toBe(false);
+    expect(grammar.match("1 1").succeeded()).toBe(false);
+    expect(grammar.match("{}() {}()").succeeded()).toBe(false);
+    expect(grammar.match("print() print()").succeeded()).toBe(false);
+  });
+
+  it("should allow blank line with space", function() {
+    expect(grammar.match(" 1 \n \n 2").succeeded()).toBe(true);
   });
 });

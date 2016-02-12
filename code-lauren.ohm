@@ -2,7 +2,7 @@ CodeLauren {
   Start = ExpressionList
 
   ExpressionList = listOf<Expression, eol>
-  Expression = Invocation | Conditional | Assignment | Lambda | Literal
+  Expression = Invocation | Conditional | Assignment | Lambda | Literal | identifier
 
   Lambda = "{" ParameterList ExpressionList "}"
 
@@ -24,7 +24,7 @@ CodeLauren {
   Elseif = "elseif" Expression Lambda (Elseif | Else)*
   Else = "else" Lambda
 
-  Literal = number | string | identifier | boolean
+  Literal = number | string | boolean
 
   number = "-"? digit+ ("." digit+)?
 

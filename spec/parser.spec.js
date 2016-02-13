@@ -92,18 +92,6 @@ describe("parser", function() {
       expect(grammar.match("print( 1 \n 2 )").succeeded()).toBe(true);
     });
 
-    it("should parse a double invocation", function() {
-      expect(grammar.match("print()()").succeeded()).toBe(true);
-    });
-
-    it("should parse a quadruple invocation w args", function() {
-      expect(grammar.match("print(1)(2)(3)(4)").succeeded()).toBe(true);
-    });
-
-    it("should parse a lambda invocation that produces a lambda that is invoked", function() {
-      expect(grammar.match("{ {} }()()").succeeded()).toBe(true);
-    });
-
     it("should be able to invoke result of conditional", function() {
       expect(grammar.match("if true { }()").succeeded()).toBe(true);
     });

@@ -6,13 +6,10 @@ CodeLauren {
 
   Lambda = "{" ParameterList ExpressionList "}"
 
-  Invocation = Invocable ApplicationList
+  Invocation = Invocable "(" ArgumentList ")"
+  ArgumentList = listOf<Expression, space>
 
   Invocable = Conditional | Lambda | identifier
-
-  ApplicationList = Application+
-  Application = "(" ArgumentList ")"
-  ArgumentList = listOf<Expression, space>
 
   ParameterList = listOf<Parameter, space>
   Parameter = "?" identifier

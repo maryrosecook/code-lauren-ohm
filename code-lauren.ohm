@@ -30,7 +30,7 @@ CodeLauren {
 
   string = "\"" (alnum | "-" | "." | "," | "#" | space)* "\""
 
-  identifier = ~keyword letter+ alnum*
+  identifier = ~keyword letter alnum*
 
   boolean = "true" | "false"
 

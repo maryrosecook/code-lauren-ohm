@@ -35,6 +35,12 @@ describe("parser", function() {
     });
   });
 
+  describe("forever", function() {
+    it("should parse a forever", function() {
+      expect(grammar.match("forever { 1 }").succeeded()).toBe(true);
+    });
+  });
+
   describe("lambda", function() {
     it("should parse an uninvoked lambda with no params or body", function() {
       expect(grammar.match("{}").succeeded()).toBe(true);

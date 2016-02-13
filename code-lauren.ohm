@@ -2,7 +2,7 @@ CodeLauren {
   Start = ExpressionList
 
   ExpressionList = listOf<Expression, eol>
-  Expression = Invocation | Conditional | Assignment | Lambda | Literal | identifier
+  Expression = Forever | Invocation | Conditional | Assignment | Lambda | Literal | identifier
 
   Lambda = "{" ParameterList ExpressionList "}"
 
@@ -18,6 +18,8 @@ CodeLauren {
   Parameter = "?" identifier
 
   Assignment = identifier ":" Expression
+
+  Forever = "forever" Lambda
 
   Conditional = If
   If = "if" Expression Lambda (Elseif | Else)*

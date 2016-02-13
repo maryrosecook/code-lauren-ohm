@@ -26,6 +26,15 @@ describe("bytecode compiler", function() {
                   ["return"]]);
     });
   });
+
+  describe("assignments", function() {
+    it("should compile an assignment", function() {
+      expect(stripBc(bytecode("a1: 2")))
+        .toEqual([["push", 2],
+                  ["set_env", "a1"],
+                  ["return"]]);
+    });
+  });
 });
 
 function stripBc(bc) {

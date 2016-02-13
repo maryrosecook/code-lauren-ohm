@@ -6,27 +6,44 @@ var grammar = ohm.grammar(grammarText);
 var ANNOTATE = "annotate";
 var DO_NOT_ANNOTATE = "do_not_annotate";
 
-function name(capture) {
-  return capture._node.ctorName;
-};
-
-var semantics = grammar.semantics().addOperation('bytecode', {
+var semantics = grammar.semantics().addOperation("bytecode", {
   ExpressionList: function(listOf) {
     var el = this;
-    var expressions = listOf.bytecode();
-    var pops = mapCat(expressions.slice(1),
-                      function(e) { return ins(["pop"], el); });
+    var expressions = listOf.extractListOf();
+    var popsBc = mapCat(expressions.slice(1),
+                        function(e) { return ins(["pop"], el); });
 
-    return expressions
-      .concat(pops)
+    return listOf.bytecode()
+      .concat(popsBc)
       .concat(ins(["return"], el));
+  },
+
+  Expression: function(e) {
+    return e.bytecode();
+  },
+
+  Assignment: function(identifier, _colon, value) {
+    return value.bytecode()
+      .concat(ins(["set_env", identifier.bytecode()], this, ANNOTATE));
+  },
+
+  Literal: function(l) {
+    return ins(["push", l.bytecode()], this, ANNOTATE);
+  },
+
+  identifier: function(firstLetter, restCharacters) {
+    return firstLetter.interval.contents + restCharacters.interval.contents;
+  },
+
+  number: function(_, _, _, _) {
+    return parseFloat(this.interval.contents, 10);
   },
 
   listOf: function(l) {
     return l.bytecode();
   },
 
-  listOf_some: function(first, separators, restIter) {
+  listOf_some: function(first, _separators, restIter) {
     return first.bytecode()
       .concat(mapCat(restIter.children,
                      function(e) { return e.bytecode(); }));
@@ -34,18 +51,18 @@ var semantics = grammar.semantics().addOperation('bytecode', {
 
   listOf_none: function() {
     return ins(["push", undefined], this);
+  }
+}).addOperation("extractListOf", {
+  listOf: function(l) {
+    return l.extractListOf();
   },
 
-  Expression: function(e) {
-    return e.bytecode();
+  listOf_some: function(first, _separators, restIter) {
+    return [first].concat(restIter.children);
   },
 
-  Literal: function(l) {
-    return ins(["push", l.bytecode()], this, ANNOTATE);
-  },
-
-  number: function(_, _, _, _) {
-    return parseFloat(this.interval.contents, 10);
+  listOf_none: function() {
+    return [];
   }
 });
 
@@ -71,7 +88,6 @@ function mapCat(list, fn) {
       return acc.concat(fn(x));
     }, []);
 };
-
 
 module.exports = {
   grammar: grammar,

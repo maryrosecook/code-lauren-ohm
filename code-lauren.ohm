@@ -2,35 +2,34 @@ CodeLauren {
   Start = ExpressionList
 
   ExpressionList = listOf<Expression, eol>
-  Expression = Forever | Invocation | Conditional | Assignment | Lambda | Literal | identifier
+  Expression = Forever | Invocation | Conditional | Assignment | Lambda | Literal | identifierLookup
 
   Lambda = "{" ParameterList ExpressionList "}"
+  ParameterList = listOf<Parameter, space>
+  Parameter = "?" identifier
 
   Invocation = Invocable "(" ArgumentList ")"
   ArgumentList = listOf<Expression, space>
 
-  Invocable = Conditional | Lambda | identifier
-
-  ParameterList = listOf<Parameter, space>
-  Parameter = "?" identifier
+  Invocable = Conditional | Lambda | identifierLookup
 
   Assignment = identifier ":" Expression
 
-  Forever = "forever" Lambda
+  Forever = "forever" Block
 
-  Conditional = If
-  If = "if" Expression Lambda (Elseif | Else)*
-  Elseif = "elseif" Expression Lambda (Elseif | Else)*
-  Else = "else" Lambda
+  Block = Lambda
 
-  Literal = number | string | boolean
+  Conditional = If Elseif* Else?
+  If = "if" Expression Block
+  Elseif = "elseif" Expression Block
+  Else = "else" Block
 
-  number = "-"? digit+ ("." digit+)?
-
-  string = "\"" (alnum | "-" | "." | "," | "#" | space)* "\""
-
+  identifierLookup = identifier
   identifier = ~keyword letter alnum*
 
+  Literal = number | string | boolean
+  number = "-"? digit+ ("." digit+)?
+  string = "\"" (alnum | "-" | "." | "," | "#" | space)* "\""
   boolean = "true" | "false"
 
   keyword = "if" | "elseif" | "else" | "forever" | "true" | "false"

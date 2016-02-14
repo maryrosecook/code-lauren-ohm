@@ -56,6 +56,14 @@ describe("bytecode compiler", function() {
     });
   });
 
+  describe("literals", function() {
+    it("should compile a string", function() {
+      expect(stripBc(bytecode('"hi"')))
+        .toEqual([["push", "hi"],
+                  ["return"]]);
+    });
+  });
+
   describe("lambdas", function() {
     it("should compile an empty lambda", function() {
       expect(stripBc(bytecode("{}")))

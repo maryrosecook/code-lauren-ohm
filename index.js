@@ -116,6 +116,10 @@ var semantics = grammar.semantics().addOperation("bytecode", {
     return keyword.interval.contents === "true" ? true : false;
   },
 
+  string: function(_quote, characters, _quote) {
+    return characters.interval.contents;
+  },
+
   listOf: function(l) {
     return l.bytecode();
   },

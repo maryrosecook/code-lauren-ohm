@@ -57,9 +57,21 @@ describe("bytecode compiler", function() {
   });
 
   describe("literals", function() {
+    it("should compile a number", function() {
+      expect(stripBc(bytecode("1")))
+        .toEqual([["push", 1],
+                  ["return"]]);
+    });
+
     it("should compile a string", function() {
       expect(stripBc(bytecode('"hi"')))
         .toEqual([["push", "hi"],
+                  ["return"]]);
+    });
+
+    it("should compile a boolean", function() {
+      expect(stripBc(bytecode("true")))
+        .toEqual([["push", true],
                   ["return"]]);
     });
   });

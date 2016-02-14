@@ -7,11 +7,6 @@ var ANNOTATE = "annotate";
 var DO_NOT_ANNOTATE = "do_not_annotate";
 
 var semantics = grammar.semantics().addOperation("bytecode", {
-
-
-  // TODO: any missing rules?
-
-
   ExpressionList: function(listOf) {
     var el = this;
     var expressions = listOf.extractListOf();

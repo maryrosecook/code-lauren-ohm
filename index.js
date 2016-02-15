@@ -18,10 +18,6 @@ var semantics = grammar.semantics().addOperation("bytecode", {
       .concat(ins(["return"], el));
   },
 
-  Expression: function(e) {
-    return e.bytecode();
-  },
-
   Assignment: function(name, _colon, value) {
     return value.bytecode()
       .concat(ins(["set_env", name.bytecode()], this, ANNOTATE));
@@ -115,10 +111,6 @@ var semantics = grammar.semantics().addOperation("bytecode", {
     return characters.interval.contents;
   },
 
-  listOf: function(l) {
-    return l.bytecode();
-  },
-
   listOf_some: function(first, _separators, restIter) {
     return mapCat([first].concat(restIter.children),
                   function(e) { return e.bytecode(); });
@@ -128,10 +120,6 @@ var semantics = grammar.semantics().addOperation("bytecode", {
     return ins(["push", undefined], this);
   }
 }).addOperation("extractListOf", {
-  listOf: function(l) {
-    return l.extractListOf();
-  },
-
   listOf_some: function(first, _separators, restIter) {
     return [first].concat(restIter.children);
   },

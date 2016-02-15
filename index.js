@@ -120,9 +120,8 @@ var semantics = grammar.semantics().addOperation("bytecode", {
   },
 
   listOf_some: function(first, _separators, restIter) {
-    return first.bytecode()
-      .concat(mapCat(restIter.children,
-                     function(e) { return e.bytecode(); }));
+    return mapCat([first].concat(restIter.children),
+                  function(e) { return e.bytecode(); });
   },
 
   listOf_none: function() {

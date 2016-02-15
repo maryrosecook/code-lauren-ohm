@@ -8,14 +8,20 @@ var DO_NOT_ANNOTATE = "do_not_annotate";
 
 var semantics = grammar.semantics().addOperation("bytecode", {
   ExpressionList: function(listOf) {
-    var el = this;
     var expressions = listOf.extractListOf();
-    var popsBc = mapCat(expressions.slice(1),
-                        function(e) { return ins(["pop"], el); });
 
-    return listOf.bytecode()
+    var expressionsBc;
+    if (expressions.length === 0) {
+      expressionsBc = ins(["push", undefined], this);
+    } else {
+      expressionsBc = mapCat(expressions, function(e) { return e.bytecode(); });
+    }
+
+    var popsBc = mapCat(expressions.slice(1), function(e) { return ins(["pop"], listOf); });
+
+    return expressionsBc
       .concat(popsBc)
-      .concat(ins(["return"], el));
+      .concat(ins(["return"], listOf));
   },
 
   Assignment: function(name, _colon, value) {
@@ -109,15 +115,6 @@ var semantics = grammar.semantics().addOperation("bytecode", {
 
   string: function(_quote, characters, _quote) {
     return characters.interval.contents;
-  },
-
-  listOf_some: function(first, _separators, restIter) {
-    return mapCat([first].concat(restIter.children),
-                  function(e) { return e.bytecode(); });
-  },
-
-  listOf_none: function() {
-    return ins(["push", undefined], this);
   }
 }).addOperation("extractListOf", {
   listOf_some: function(first, _separators, restIter) {

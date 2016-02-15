@@ -26,7 +26,7 @@ var semantics = grammar.semantics().addOperation("bytecode", {
 
   Assignment: function(name, _colon, value) {
     return value.bytecode()
-      .concat(ins(["set_env", name.bytecode()], this, ANNOTATE));
+      .concat(ins(["set_env", name.raw()], this, ANNOTATE));
   },
 
   Invocation: function(invocable, _brace, argList, _brace) {
@@ -94,13 +94,21 @@ var semantics = grammar.semantics().addOperation("bytecode", {
   },
 
   Literal: function(l) {
-    return ins(["push", l.bytecode()], this, ANNOTATE);
+    return ins(["push", l.raw()], this, ANNOTATE);
   },
 
   identifierLookup: function(identifier) {
-    return ins(["get_env", identifier.bytecode()], this, ANNOTATE);
+    return ins(["get_env", identifier.raw()], this, ANNOTATE);
+  }
+}).addOperation("extractListOf", {
+  listOf_some: function(first, _separators, restIter) {
+    return [first].concat(restIter.children);
   },
 
+  listOf_none: function() {
+    return [];
+  }
+}).addOperation("raw", {
   identifier: function(firstLetter, restCharacters) {
     return firstLetter.interval.contents + restCharacters.interval.contents;
   },
@@ -115,14 +123,6 @@ var semantics = grammar.semantics().addOperation("bytecode", {
 
   string: function(_quote, characters, _quote) {
     return characters.interval.contents;
-  }
-}).addOperation("extractListOf", {
-  listOf_some: function(first, _separators, restIter) {
-    return [first].concat(restIter.children);
-  },
-
-  listOf_none: function() {
-    return [];
   }
 });
 

@@ -1,6 +1,6 @@
 # Code Lauren compiler in Ohm
 
-An implementation of Code Lauren's parser and bytecode compiler that uses Ohm rather than a normal PEG.
+An implementation of Code Lauren's parser and bytecode compiler that uses [Ohm](https://github.com/cdglabs/ohm) rather than a normal PEG.
 
 ## Running the tests
 
